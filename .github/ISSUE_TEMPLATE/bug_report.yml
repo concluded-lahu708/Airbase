@@ -1,0 +1,42 @@
+name: Bug Report
+description: Create a report to help us improve Airbase
+title: '[BUG] '
+labels: ['bug']
+assignees: ''
+
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to report a bug!
+  - type: textarea
+    id: describe-bug
+    attributes:
+      label: Describe the Bug
+      description: A clear and concise description of what the bug is.
+      placeholder: When I click on...
+    validations:
+      required: true
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the behavior.
+      placeholder: |
+        1. Launch Airbase.exe
+        2. Click on 'Upload'
+        3. See error...
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System / Browser
+      options:
+        - Windows 11
+        - Windows 10
+        - iOS Safari (Mobile)
+        - Android Chrome (Mobile)
+        - macOS Safari/Chrome
+        - Other
+    validations:
+      required: true

@@ -1,5 +1,6 @@
 # 🌐 Airbase — Home LAN File Sharing Hub
 
+[![Build Executable](https://github.com/SakethGoljana/Airbase/actions/workflows/build.yml/badge.svg)](https://github.com/SakethGoljana/Airbase/actions/workflows/build.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-indigo.svg)](https://opensource.org/licenses/MIT)
 [![Platform: Windows](https://img.shields.io/badge/Platform-Windows-blue.svg)](#)
 [![Python: 3.10+](https://img.shields.io/badge/Python-3.10%2B-brightgreen.svg)](#)
