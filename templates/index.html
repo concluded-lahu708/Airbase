@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home LAN Share — Wi-Fi File Sharing Hub</title>
+    <meta name="description" content="Instant, zero-config local network file sharing for your home Wi-Fi network with live sync, clipboard paste, subfolders, and media previews.">
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/jpeg" href="/static/images/logo.jpg">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- Ambient Background Mesh Glow -->
+    <div class="ambient-glow" id="ambient-glow"></div>
+
+    <div class="app-wrapper">
+        <!-- Top Navbar -->
+        <header class="navbar">
+            <div class="brand">
+                <div class="brand-icon">
+                    <img src="/static/images/logo.jpg" alt="Airbase Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">Airbase</span>
+                    <span class="brand-subtitle">Home LAN Share</span>
+                </div>
+            </div>
+            
+            <div class="nav-actions">
+                <div class="connection-pill" id="connection-status">
+                    <span class="pulse-dot"></span>
+                    <span id="status-text">LAN Active</span>
+                </div>
+                
+                <!-- Audio Mute/Unmute Toggle -->
+                <button class="icon-btn" id="btn-sound-toggle" onclick="toggleSound()" title="Toggle Sound Feedback">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                </button>
+
+                <!-- Theme Switcher -->
+                <button class="icon-btn" id="btn-theme-toggle" onclick="toggleTheme()" title="Switch Light/Dark Mode">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="theme-icon-dark"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="theme-icon-light" style="display:none;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Connection & Discovery Section -->
+            <section class="connect-card">
+                <div class="qr-container" title="Click to enlarge QR code" id="qr-wrapper">
+                    <img id="qr-image" src="" alt="Scan QR Code to connect" class="qr-code-img">
+                    <span class="qr-hint">Tap to expand</span>
+                </div>
+                
+                <div class="connect-details">
+                    <div class="connect-header">
+                        <h2>Share with any device on Wi-Fi</h2>
+                        <p>Scan the QR code with your phone camera or enter this URL on any phone, tablet, or laptop on your Wi-Fi:</p>
+                    </div>
+                    
+                    <div class="url-copy-box">
+                        <input type="text" id="network-url-input" readonly value="Detecting LAN IP..." aria-label="Network Share URL">
+                        <button class="btn btn-primary" id="btn-copy-url" onclick="copyNetworkUrl()">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                            <span id="copy-btn-text">Copy Link</span>
+                        </button>
+                    </div>
+
+                    <div class="notice-tags">
+                        <div class="tag tag-awake">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                            Keep laptop awake while sharing
+                        </div>
+                        <div class="tag tag-wifi">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+                            Must be on same Wi-Fi network
+                        </div>
+                        <div class="tag tag-storage" id="disk-free-badge">
+                            💾 Free Space: Calculating...
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Storage Analytics Bar -->
+            <section class="analytics-card" id="analytics-card">
+                <div class="analytics-header">
+                    <div class="analytics-info">
+                        <span class="analytics-title">Hub Storage Usage</span>
+                        <span class="analytics-sub" id="analytics-summary">0 MB used across 0 files</span>
+                    </div>
+                    <div class="analytics-actions">
+                        <button class="btn btn-sm btn-secondary" onclick="openCreateFolderModal()">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>
+                            New Folder
+                        </button>
+                        <button class="btn btn-sm btn-secondary" onclick="downloadAllZip()">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Download ZIP
+                        </button>
+                    </div>
+                </div>
+                <div class="storage-bar-track">
+                    <div class="storage-bar-fill bar-img" id="bar-cat-image" style="width: 0%" title="Images"></div>
+                    <div class="storage-bar-fill bar-doc" id="bar-cat-document" style="width: 0%" title="Documents"></div>
+                    <div class="storage-bar-fill bar-video" id="bar-cat-video" style="width: 0%" title="Video & Audio"></div>
+                    <div class="storage-bar-fill bar-code" id="bar-cat-code" style="width: 0%" title="Code"></div>
+                    <div class="storage-bar-fill bar-other" id="bar-cat-other" style="width: 0%" title="Others"></div>
+                </div>
+            </section>
+
+            <!-- Drag & Drop Upload Section -->
+            <section class="upload-section">
+                <div class="drop-zone" id="drop-zone">
+                    <input type="file" id="file-input" multiple class="file-input-hidden" onchange="handleFileSelect(event)">
+                    <input type="file" id="folder-input" webkitdirectory directory multiple class="file-input-hidden" onchange="handleFileSelect(event)">
+                    
+                    <div class="drop-zone-content">
+                        <div class="upload-icon-wrapper">
+                            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="17 8 12 3 7 8"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                        </div>
+                        <h3 class="drop-title">Drag & drop files or folders here</h3>
+                        <p class="drop-subtitle" id="upload-target-subtext">Uploading to: SharedFiles /</p>
+                        
+                        <div class="upload-buttons-group">
+                            <button class="btn btn-primary btn-upload-lg" onclick="document.getElementById('file-input').click()">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                Upload Files
+                            </button>
+                            <button class="btn btn-secondary btn-upload-lg" onclick="openCreateFolderModal()">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>
+                                New Folder
+                            </button>
+                        </div>
+                        
+                        <div class="paste-hint-pill">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+                            Tip: Press <strong>Ctrl+V</strong> anywhere to paste copied images or files!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="upload-progress-container" id="progress-container"></div>
+            </section>
+
+            <!-- Quick Shared Notes Pad -->
+            <section class="notes-pad-card">
+                <div class="notes-pad-header" onclick="toggleNotesPad()">
+                    <div class="notes-title">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        <span>Share Quick Text / Wi-Fi Password / Links</span>
+                    </div>
+                    <span class="notes-toggle-icon" id="notes-toggle-arrow">▼</span>
+                </div>
+                
+                <div class="notes-pad-body" id="notes-pad-body" style="display: none;">
+                    <div class="notes-input-row">
+                        <input type="text" id="note-title-input" placeholder="Note Title (e.g. Wi-Fi Password)" class="input-field">
+                        <button class="btn btn-primary" onclick="submitQuickNote()">Share Note</button>
+                    </div>
+                    <textarea id="note-content-input" placeholder="Type or paste your text note here..." class="textarea-field" rows="3"></textarea>
+                </div>
+            </section>
+
+            <!-- Shared Files Explorer Section -->
+            <section class="files-section">
+                <!-- Breadcrumb Navigation Trail -->
+                <div class="breadcrumbs-bar" id="breadcrumbs-bar">
+                    <!-- Injected by JS -->
+                </div>
+
+                <!-- Toolbar Header -->
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>Shared Files</h2>
+                        <span class="file-count-badge" id="file-count">0 items</span>
+                    </div>
+                    
+                    <div class="section-controls">
+                        <select id="sort-select" class="select-dropdown" onchange="renderFilesList()">
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                            <option value="name">Name (A-Z)</option>
+                            <option value="size">Size (Largest)</option>
+                        </select>
+                        
+                        <div class="search-input-wrapper">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            <input type="text" id="file-search-input" placeholder="Search files..." onkeyup="renderFilesList()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Filter Tabs -->
+                <div class="filter-tabs" id="filter-tabs">
+                    <button class="tab-btn active" data-category="all" onclick="setCategoryFilter('all')">All</button>
+                    <button class="tab-btn" data-category="folder" onclick="setCategoryFilter('folder')">📁 Folders</button>
+                    <button class="tab-btn" data-category="image" onclick="setCategoryFilter('image')">🖼️ Images</button>
+                    <button class="tab-btn" data-category="document" onclick="setCategoryFilter('document')">📄 Documents</button>
+                    <button class="tab-btn" data-category="video" onclick="setCategoryFilter('video')">🎬 Media</button>
+                    <button class="tab-btn" data-category="code" onclick="setCategoryFilter('code')">💻 Code</button>
+                </div>
+
+                <!-- Batch Actions Bar -->
+                <div class="batch-bar" id="batch-bar" style="display: none;">
+                    <div class="batch-left">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="select-all-checkbox" onchange="toggleSelectAll(this)">
+                            <span class="checkmark"></span>
+                            <span id="selected-count">0 items selected</span>
+                        </label>
+                    </div>
+                    <div class="batch-actions">
+                        <button class="btn btn-secondary btn-sm" onclick="downloadSelectedZip()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Zip Selected
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Files & Folders Grid -->
+                <div class="files-grid" id="files-grid">
+                    <!-- Cards injected by JS -->
+                </div>
+
+                <!-- Empty State -->
+                <div class="empty-state" id="empty-state">
+                    <div class="empty-icon">
+                        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+                    </div>
+                    <h3>This folder is empty</h3>
+                    <p>Drag files here, click <strong>Upload Files</strong>, or click <strong>New Folder</strong>!</p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>Home LAN Share • Stored locally in <code>SharedFiles/</code> on laptop • No Cloud • No Internet Needed</p>
+        </footer>
+    </div>
+
+    <!-- Create Folder Modal -->
+    <div class="modal-backdrop" id="folder-modal" onclick="closeCreateFolderModal(event)">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeCreateFolderModal(event)">&times;</button>
+            <h3>Create New Folder</h3>
+            <p>Enter a folder name to create inside the current directory:</p>
+            <input type="text" id="new-folder-name-input" placeholder="e.g. Family Photos" class="input-field" onkeyup="if(event.key==='Enter') submitCreateFolder()">
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeCreateFolderModal(event)">Cancel</button>
+                <button class="btn btn-primary" onclick="submitCreateFolder()">Create Folder</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- QR Code Zoom Modal -->
+    <div class="modal-backdrop" id="qr-modal" onclick="closeQrModal(event)">
+        <div class="modal-content qr-modal-content">
+            <button class="modal-close" onclick="closeQrModal(event)">&times;</button>
+            <h3>Scan with Phone Camera</h3>
+            <img id="qr-modal-img" src="" alt="Enlarged QR Code">
+            <p class="qr-modal-url" id="qr-modal-url-text"></p>
+            <div class="modal-actions">
+                <a id="btn-download-qr" download="HomeLANShare_QR.png" class="btn btn-primary" href="">Download QR Image</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox Media Previewer Modal -->
+    <div class="modal-backdrop" id="media-modal" onclick="closeMediaModal(event)">
+        <div class="modal-content media-modal-content">
+            <button class="modal-close" onclick="closeMediaModal(event)">&times;</button>
+            <h3 id="media-modal-title">File Preview</h3>
+            <div class="media-preview-container" id="media-preview-container"></div>
+            <div class="modal-actions">
+                <a id="media-download-link" href="" download class="btn btn-primary">Download File</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Code & Text Viewer Modal -->
+    <div class="modal-backdrop" id="code-modal" onclick="closeCodeModal(event)">
+        <div class="modal-content code-modal-content">
+            <button class="modal-close" onclick="closeCodeModal(event)">&times;</button>
+            <div class="code-modal-header">
+                <h3 id="code-modal-title">Text Viewer</h3>
+                <button class="btn btn-sm btn-secondary" onclick="copyCodeContent()">Copy Code</button>
+            </div>
+            <pre class="code-viewer-body" id="code-viewer-body"></pre>
+            <div class="modal-actions">
+                <a id="code-download-link" href="" download class="btn btn-primary">Download File</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-backdrop" id="delete-modal" onclick="closeDeleteModal(event)">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeDeleteModal(event)">&times;</button>
+            <h3>Delete Item?</h3>
+            <p id="delete-modal-text">Are you sure you want to delete this? This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeDeleteModal(event)">Cancel</button>
+                <button class="btn btn-danger" id="btn-confirm-delete">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

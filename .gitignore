@@ -1,0 +1,29 @@
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# Python Cache & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# PyInstaller & Build Artifacts
+build/
+dist/
+EBWebView/
+installer_output/
+*.spec.bak
+
+# User Uploaded Shared Files (Keep directory structure, ignore user files)
+SharedFiles/*
+!SharedFiles/.gitkeep
+
+# IDE & OS Metadata
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
